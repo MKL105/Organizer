@@ -1,0 +1,86 @@
+@startuml
+    package UI {
+        note "The UI layer is responsible for rendering\n the information and visualizing it for the user." as N1
+    }
+    package Calendar {
+        note "The calendar and all its corresponding parts like\n events and appointments." as N2
+
+        class Appointment {
+            - Date startDate
+            - Date endDate
+            - Time startTime
+            - Time endTime
+            - string name
+            - Person[] persons
+            - Location location
+            - boolean moveable
+            - Label label
+            - Color color
+            - RepetitionRule repetitionRule
+        }
+
+        class Task {
+            - Date dueDate
+            - Time dueTime
+            - string name
+            - Duration duration
+            - boolean splittable
+        }
+
+        class Blocker {
+            - Date startDate
+            - Date endDate
+            - Time startTime
+            - Time endTime
+            - string name
+        }
+
+        class Duration {
+            - int days
+            - int hours
+            - int minutes
+        }
+
+        class Person {
+            - string name
+            - string company
+            - string mail
+            - string phone
+            - Address address
+            - string notes
+        }
+
+        class Location {
+            - string name
+            - Address address
+        }
+
+        class Address {
+            - string street
+            - string number
+            - string city
+            - string zipCode
+            - string country
+        }
+
+        class Label {
+            - string name
+            - Color color
+        }
+
+        enum RepetitionRule {
+            EVERY_X
+            ONCE
+        }
+    }
+    package Logic {
+        note "Contains the automatic organizing logic" as N3
+    }
+    package Services {
+        note "Contains additional services that extend the basic functionality." as N4
+        package "Google Calendar access" {
+        }
+        package ".csv export" {
+        }
+    }
+@enduml
