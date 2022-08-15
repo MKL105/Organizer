@@ -2,7 +2,12 @@ package calendar;
 
 import java.util.Date;
 
-public class Task {
+/**
+ * This class represents a task.
+ * @author Markus Luethje
+ */
+
+public class Task extends CalendarEvent{
     private Date dueDate;
     private String name;
     private Duration duration;
@@ -45,15 +50,5 @@ public class Task {
 
     public void setSplittable(boolean splittable) {
         this.splittable = splittable;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "dueDate=" + dueDate +
-                ", name='" + name + '\'' +
-                ", duration=" + duration +
-                ", splittable=" + splittable +
-                '}';
     }
 }

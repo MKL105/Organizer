@@ -1,5 +1,10 @@
 package calendar;
 
+/**
+ * This class represents an address.
+ * @author Markus Luethje
+ */
+
 public class Address {
     private String street;
     private String number;
@@ -53,16 +58,5 @@ public class Address {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    @Override
-    public String toString() {
-        return "Address{" +
-                "street='" + street + '\'' +
-                ", number='" + number + '\'' +
-                ", city='" + city + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", country='" + country + '\'' +
-                '}';
     }
 }

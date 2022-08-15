@@ -1,5 +1,9 @@
 package calendar;
 
+/**
+ * This class holds the internal representation of an event duration.
+ */
+
 public class Duration {
     private int days;
     private int hours;
@@ -33,14 +37,5 @@ public class Duration {
 
     public void setMinutes(int minutes) {
         this.minutes = minutes;
-    }
-
-    @Override
-    public String toString() {
-        return "Duration{" +
-                "days=" + days +
-                ", hours=" + hours +
-                ", minutes=" + minutes +
-                '}';
     }
 }

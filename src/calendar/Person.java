@@ -1,5 +1,10 @@
 package calendar;
 
+/**
+ * This class represents a person with all its according information.
+ * @author Markus Luethje
+ */
+
 public class Person {
     private String name;
     private String company;
@@ -53,16 +58,5 @@ public class Person {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", company='" + company + '\'' +
-                ", mail='" + mail + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address=" + address +
-                '}';
     }
 }

@@ -1,5 +1,10 @@
 package calendar;
 
+/**
+ * This class represents a location, which is an address with an associated name.
+ * @author Markus Luethje
+ */
+
 public class Location {
     private String name;
     private Address address;
@@ -23,13 +28,5 @@ public class Location {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    @Override
-    public String toString() {
-        return "Location{" +
-                "name='" + name + '\'' +
-                ", address=" + address +
-                '}';
     }
 }

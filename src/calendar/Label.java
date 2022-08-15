@@ -2,6 +2,11 @@ package calendar;
 
 import java.awt.Color;
 
+/**
+ * This class represents a label.
+ * @author Markus Luethje
+ */
+
 public class Label {
     private String name;
     private Color color;
@@ -25,13 +30,5 @@ public class Label {
 
     public void setColor(Color color) {
         this.color = color;
-    }
-
-    @Override
-    public String toString() {
-        return "Label{" +
-                "name='" + name + '\'' +
-                ", color=" + color +
-                '}';
     }
 }
