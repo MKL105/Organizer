@@ -8,9 +8,7 @@
         class Appointment {
             - Date startDate
             - Date endDate
-            - Time startTime
-            - Time endTime
-            - string name
+            - String name
             - Person[] persons
             - Location location
             - boolean moveable
@@ -21,8 +19,7 @@
 
         class Task {
             - Date dueDate
-            - Time dueTime
-            - string name
+            - String name
             - Duration duration
             - boolean splittable
         }
@@ -30,9 +27,7 @@
         class Blocker {
             - Date startDate
             - Date endDate
-            - Time startTime
-            - Time endTime
-            - string name
+            - String name
         }
 
         class Duration {
@@ -42,29 +37,28 @@
         }
 
         class Person {
-            - string name
-            - string company
-            - string mail
-            - string phone
+            - String name
+            - String company
+            - String mail
+            - String phone
             - Address address
-            - string notes
         }
 
         class Location {
-            - string name
+            - String name
             - Address address
         }
 
         class Address {
-            - string street
-            - string number
-            - string city
-            - string zipCode
-            - string country
+            - String street
+            - String number
+            - String city
+            - String zipCode
+            - String country
         }
 
         class Label {
-            - string name
+            - String name
             - Color color
         }
 
