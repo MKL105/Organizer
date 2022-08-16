@@ -9,15 +9,16 @@ import java.util.Date;
 
 public class Task extends CalendarEvent{
     private Date dueDate;
-    private String name;
     private Duration duration;
     private boolean splittable;
+    private Interval interval;
 
-    public Task(Date dueDate, String name, Duration duration, boolean splittable) {
+    public Task(String name, Date dueDate, Duration duration, boolean splittable, Interval interval) {
+        super(name, null, null, false);
         this.dueDate = dueDate;
-        this.name = name;
         this.duration = duration;
         this.splittable = splittable;
+        this.interval = interval;
     }
 
     public Date getDueDate() {
@@ -26,14 +27,6 @@ public class Task extends CalendarEvent{
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Duration getDuration() {
@@ -50,5 +43,13 @@ public class Task extends CalendarEvent{
 
     public void setSplittable(boolean splittable) {
         this.splittable = splittable;
+    }
+
+    public Interval getInterval() {
+        return interval;
+    }
+
+    public void setInterval(Interval interval) {
+        this.interval = interval;
     }
 }

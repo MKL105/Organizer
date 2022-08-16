@@ -9,10 +9,18 @@ import java.util.Date;
 
 public class Blocker extends CalendarEvent{
 
-    public Blocker(String name, Date startDate, Date endDate) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.moveable = false;
+    private Interval interval;
+
+    public Blocker(String name, Date startDate, Date endDate, Interval interval) {
+        super(name, startDate, endDate, false);
+        this.interval = interval;
+    }
+
+    public Interval getInterval() {
+        return interval;
+    }
+
+    public void setInterval(Interval interval) {
+        this.interval = interval;
     }
 }

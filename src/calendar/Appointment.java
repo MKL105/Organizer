@@ -17,12 +17,10 @@ public class Appointment extends CalendarEvent {
     private RepetitionRule repetitionRule;
 
     public Appointment(String name, Date startDate, Date endDate, Person[] persons, Location location, boolean moveable, Label label, Color color, RepetitionRule repetitionRule) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
+
+        super(name, startDate, endDate, moveable);
         this.persons = persons;
         this.location = location;
-        this.moveable = moveable;
         this.label = label;
         this.color = color;
         this.repetitionRule = repetitionRule;

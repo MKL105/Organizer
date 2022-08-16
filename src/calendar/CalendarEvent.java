@@ -13,6 +13,13 @@ public abstract class CalendarEvent {
     protected Date endDate;
     protected boolean moveable;
 
+    public CalendarEvent(String name, Date startDate, Date endDate, boolean moveable) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.moveable = moveable;
+    }
+
     public String getName() {
         return name;
     }
