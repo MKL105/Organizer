@@ -1,25 +1,25 @@
 package ui;
 
-import calendar.Task;
+import calendar.Blocker;
 
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class TaskElement extends Panel {
+public class BlockerElement extends Panel{
 
-    final Task task;
-    final Color TASKFILLCOLOR = new Color(213, 70, 70);
-    final Color TASKBORDERCOLOR = new Color(218, 15, 15);
-    final Color TEXTCOLOR = Color.WHITE;
+    final Blocker blocker;
+    final Color BLOCKERFILLCOLOR = new Color(243, 184, 6);
+    final Color BLOCKERBORDERCOLOR = new Color(144, 179, 46);
+    final Color TEXTCOLOR = Color.BLACK;
     final int WIDTH = 100;
     final int HEIGHT = 120;
     final int BORDERSTRENGTH = 3;
-    final int ARCWITHHEIGHT = 10;
+    final int ARCWIDTHHEIGHT = 10;
     final int SPACING = 15;
-    final int LEFTALLIGN = (SPACING / 2) + BORDERSTRENGTH + 5;
+    final int LEFTALLIGN = (SPACING/2) + BORDERSTRENGTH + 5;
 
-    public TaskElement(Task task) {
-        this.task = task;
+    public BlockerElement(Blocker blocker) {
+        this.blocker = blocker;
         this.setMaximumSize(new Dimension(WIDTH + SPACING, HEIGHT));
         this.setPreferredSize(new Dimension(WIDTH + SPACING, HEIGHT));
         this.setLayout(new BorderLayout());
@@ -41,15 +41,15 @@ public class TaskElement extends Panel {
     private void draw(Graphics g) {
         int offset = SPACING / 2;
         Graphics2D graphic = (Graphics2D) g;
-        graphic.setColor(TASKBORDERCOLOR);
-        graphic.fillRoundRect(offset, 0, WIDTH, HEIGHT, ARCWITHHEIGHT, ARCWITHHEIGHT);
-        graphic.setColor(TASKFILLCOLOR);
-        graphic.fillRoundRect(BORDERSTRENGTH + offset, BORDERSTRENGTH, WIDTH - (2 * BORDERSTRENGTH), HEIGHT - (2 * BORDERSTRENGTH), ARCWITHHEIGHT, ARCWITHHEIGHT);
-        drawTaskName(graphic, task.getName());
+        graphic.setColor(BLOCKERBORDERCOLOR);
+        graphic.fillRoundRect(offset, 0, WIDTH, HEIGHT, ARCWIDTHHEIGHT, ARCWIDTHHEIGHT);
+        graphic.setColor(BLOCKERFILLCOLOR);
+        graphic.fillRoundRect(BORDERSTRENGTH + offset, BORDERSTRENGTH, WIDTH - (2 * BORDERSTRENGTH), HEIGHT - (2 * BORDERSTRENGTH), ARCWIDTHHEIGHT, ARCWIDTHHEIGHT);
+        drawBlockerName(graphic, blocker.getName());
         drawInfo(graphic);
     }
 
-    private void drawTaskName(Graphics2D graphic, String name) {
+    private void drawBlockerName(Graphics2D graphic, String name) {
         String firstStr = name;
         String secondStr = "";
         int index = name.length() - 2;
@@ -74,11 +74,8 @@ public class TaskElement extends Panel {
     }
 
     private void drawInfo(Graphics2D g) {
-        String dueDate = "Due: " + task.getDueDate().getDate() + "/" + task.getDueDate().getMonth() +
-                "/" + task.getDueDate().getYear();
-        drawString(g, dueDate, 55);
-        String split = task.isSplittable() ? "Splittable" : "Not splittable";
-        drawString(g, split, 70);
+        String duration = "Dur: " + blocker.getDuration().toString();
+        drawString(g, duration, 55);
     }
 
     private void drawStringCentered(Graphics2D graphic, String str, int y) {
@@ -91,5 +88,4 @@ public class TaskElement extends Panel {
         g.setColor(TEXTCOLOR);
         g.drawString(str, LEFTALLIGN, y);
     }
-
 }
