@@ -1,18 +1,23 @@
 package calendar;
 
+import Exceptions.NegativeDurationDataException;
+
 /**
  * This class holds the internal representation of an event duration.
+ *
+ * @author Markus Luethje
  */
 
-public class Duration {
+public class Duration implements Comparable<Duration> {
     private int days;
     private int hours;
     private int minutes;
 
-    public Duration(int days, int hours, int minutes) {
+    public Duration(int days, int hours, int minutes) throws NegativeDurationDataException {
         this.days = days;
         this.hours = hours;
         this.minutes = minutes;
+        validateInputData();
         optimizeDur();
     }
 
@@ -28,39 +33,58 @@ public class Duration {
         return minutes;
     }
 
-    public void setDays(int days) {
-        this.days = days;
-    }
-
-    public void setHours(int hours) {
-        this.hours = hours;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
-
     @Override
     public String toString() {
         String ret = "";
-        if (getDays() > 0) {
-            ret += getDays() + "D";
+        if (days > 0) {
+            ret += days + "D";
         }
-        if (getHours() > 0) {
-            ret += getHours() + "H";
+        if (hours > 0) {
+            ret += hours + "H";
         }
-        if (getMinutes() > 0) {
-            ret += getMinutes() + "M";
+        if (minutes > 0) {
+            ret += minutes + "M";
         }
         return ret;
     }
 
     private void optimizeDur() {
-        int addhours = getMinutes() / 60;
-        setMinutes(getMinutes() - (addhours * 60));
-        setHours(getHours() + addhours);
-        int addDays = getHours() / 24;
-        setHours(getHours() - (addDays * 24));
-        setDays(getDays() + addDays);
+        int addHours = minutes / 60;
+        minutes -= addHours * 60;
+        hours += addHours;
+        int addDays = hours / 24;
+        hours -= addDays * 24;
+        days += addDays;
+    }
+
+    @Override
+    public int compareTo(Duration d) {
+        if ((this.days == d.getDays()) && (this.hours == d.getHours()) && (this.minutes == d.getMinutes())) {
+            return 0;
+        } else if (this.days > d.getDays()) {
+            return 1;
+        } else if (this.days < d.getDays()) {
+            return -1;
+        } else if (this.hours > d.getHours()) {
+            return 1;
+        } else if (this.hours < d.getHours()) {
+            return -1;
+        } else if (this.minutes > d.getMinutes()) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    private void validateInputData() throws NegativeDurationDataException {
+        if (days < 0) {
+            throw new NegativeDurationDataException("Negative days entered for duration!");
+        }
+        if (hours < 0) {
+            throw new NegativeDurationDataException("Negative hours entered for duration!");
+        }
+        if (minutes < 0) {
+            throw new NegativeDurationDataException("Negative minutes entered for duration!");
+        }
     }
 }

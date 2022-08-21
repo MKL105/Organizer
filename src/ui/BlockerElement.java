@@ -19,15 +19,16 @@ public class BlockerElement extends Panel{
     final int LEFTALLIGN = (SPACING/2) + BORDERSTRENGTH + 5;
 
     public BlockerElement(Blocker blocker) {
+        super("blockerElement");
         this.blocker = blocker;
         this.setMaximumSize(new Dimension(WIDTH + SPACING, HEIGHT));
         this.setPreferredSize(new Dimension(WIDTH + SPACING, HEIGHT));
         this.setLayout(new BorderLayout());
-        Panel bottomPanel = new Panel();
+        Panel bottomPanel = new Panel("bottomPanel");
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.setBackground(new Color(0, 0, 0, 0));
         this.add(bottomPanel, BorderLayout.PAGE_END);
-        UIButton infoButton = new UIButton("Info", 40, 40, 10);
+        UIButton infoButton = new UIButton("Info", 40, 40, 10, "infoButton");
         bottomPanel.add(infoButton, BorderLayout.LINE_END);
         bottomPanel.setBorder(new EmptyBorder(BORDERSTRENGTH * 2, SPACING, BORDERSTRENGTH * 2, SPACING));
     }

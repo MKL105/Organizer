@@ -19,15 +19,16 @@ public class TaskElement extends Panel {
     final int LEFTALLIGN = (SPACING / 2) + BORDERSTRENGTH + 5;
 
     public TaskElement(Task task) {
+        super("taskElement");
         this.task = task;
         this.setMaximumSize(new Dimension(WIDTH + SPACING, HEIGHT));
         this.setPreferredSize(new Dimension(WIDTH + SPACING, HEIGHT));
         this.setLayout(new BorderLayout());
-        Panel bottomPanel = new Panel();
+        Panel bottomPanel = new Panel("bottomPanel");
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.setBackground(new Color(0, 0, 0, 0));
         this.add(bottomPanel, BorderLayout.PAGE_END);
-        UIButton infoButton = new UIButton("Info", 40, 40, 10);
+        UIButton infoButton = new UIButton("Info", 40, 40, 10, "infoButton");
         bottomPanel.add(infoButton, BorderLayout.LINE_END);
         bottomPanel.setBorder(new EmptyBorder(BORDERSTRENGTH * 2, SPACING, BORDERSTRENGTH * 2, SPACING));
     }
@@ -74,9 +75,8 @@ public class TaskElement extends Panel {
     }
 
     private void drawInfo(Graphics2D g) {
-        String dueDate = "Due: " + task.getDueDate().getDate() + "/" + task.getDueDate().getMonth() +
-                "/" + task.getDueDate().getYear();
-        drawString(g, dueDate, 55);
+        String duration = task.getDuration().toString();
+        drawString(g, duration, 55);
         String split = task.isSplittable() ? "Splittable" : "Not splittable";
         drawString(g, split, 70);
     }

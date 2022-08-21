@@ -1,4 +1,6 @@
-package calendar;
+package ui;
+
+import calendar.Duration;
 
 public class SideTime {
 

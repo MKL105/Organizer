@@ -1,10 +1,7 @@
 package main;
 
-import calendar.Duration;
-import calendar.Task;
+import Exceptions.NegativeDurationDataException;
 import ui.UIManager;
-
-import java.util.Date;
 
 /**
  * This class represents the main Organizer.
@@ -14,7 +11,7 @@ import java.util.Date;
 
 public class Organizer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NegativeDurationDataException {
         UIManager uiManager = new UIManager();
     }
 }

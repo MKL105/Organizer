@@ -1,21 +1,18 @@
 package ui;
 
 import javax.swing.*;
-import javax.swing.text.DateFormatter;
 import javax.swing.text.NumberFormatter;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class NumberTextField extends FormattedTextField{
 
-    public NumberTextField() {
-        super(new NumberFormatter(NumberFormat.getInstance()));
+    public NumberTextField(String name) {
+        super(new NumberFormatter(NumberFormat.getInstance()), name);
     }
 
     @Override
     protected InputVerifier getVerifier() {
-        InputVerifier verifier = new InputVerifier() {
+        return new InputVerifier() {
             @Override
             public boolean verify(JComponent input) {
                 JFormattedTextField field = (JFormattedTextField) input;
@@ -33,7 +30,6 @@ public class NumberTextField extends FormattedTextField{
                 return valid;
             }
         };
-        return verifier;
     }
 
     @Override

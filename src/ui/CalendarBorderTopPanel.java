@@ -10,8 +10,8 @@ public class CalendarBorderTopPanel extends CalendarPanel {
     final Color TEXTCOLOR = new Color(0, 170, 169);
     final Calendar calendar;
 
-    public CalendarBorderTopPanel(Date date) {
-        super();
+    public CalendarBorderTopPanel(Date date, int width, int height) {
+        super(width, height);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -25,8 +25,8 @@ public class CalendarBorderTopPanel extends CalendarPanel {
 
     private void draw(Graphics g) {
         Graphics2D graphic = (Graphics2D) g;
-        drawStringCentered(graphic, getDateString(), 20, TEXTCOLOR);
-        drawStringCentered(graphic, getWeekday(), 35, TEXTCOLOR);
+        drawStringCentered(graphic, getDateString(), 35, TEXTCOLOR);
+        drawStringCentered(graphic, getWeekday(), 50, TEXTCOLOR);
     }
 
     private String getDateString() {

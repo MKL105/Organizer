@@ -5,29 +5,29 @@
     package Calendar {
         note "The calendar and all its corresponding parts like\n events and appointments." as N2
 
-        class Appointment {
+        abstract class CalendarEvent {
+            # String name
+        }
+
+        class Appointment extends CalendarEvent {
             - Date startDate
             - Date endDate
-            - String name
-            - Person[] persons
-            - Location location
-            - boolean moveable
-            - Label label
-            - Color color
             - RepetitionRule repetitionRule
         }
 
-        class Task {
-            - Date dueDate
-            - String name
+        class Task extends CalendarEvent {
             - Duration duration
             - boolean splittable
+            - Date timeSpanStart
+            - Date timeSpanEnd
         }
 
-        class Blocker {
-            - Date startDate
-            - Date endDate
-            - String name
+        class Blocker extends CalendarEvent {
+            - Duration duration
+            - boolean splittable
+            - Date timeSpanStart
+            - Date timeSpanEnd
+            - RepetitionRule repetitionRule
         }
 
         class Duration {
@@ -36,35 +36,11 @@
             - int minutes
         }
 
-        class Person {
-            - String name
-            - String company
-            - String mail
-            - String phone
-            - Address address
-        }
-
-        class Location {
-            - String name
-            - Address address
-        }
-
-        class Address {
-            - String street
-            - String number
-            - String city
-            - String zipCode
-            - String country
-        }
-
-        class Label {
-            - String name
-            - Color color
-        }
-
         enum RepetitionRule {
-            EVERY_X
-            ONCE
+            ONCE,
+            EVERY_DAY,
+            EVERY_WEEKDAY,
+            WEEKEND
         }
     }
     package Logic {

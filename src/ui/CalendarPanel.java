@@ -4,13 +4,16 @@ import java.awt.*;
 
 public class CalendarPanel extends Panel{
 
-    final int WIDTH = 200;
-    final int HEIGHT = 80;
+    final int WIDTH ;
+    final int HEIGHT;
     final Color BORDERCOLOR = Color.BLACK;
     final Color BACKGROUNDCOLOR = new Color(185, 185, 185);
     final int BORDERSTRENGTH = 2;
 
-    public CalendarPanel() {
+    public CalendarPanel(int width, int height) {
+        super("calendarPanel");
+        WIDTH = width;
+        HEIGHT = height;
         this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
     }

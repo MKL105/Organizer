@@ -1,68 +1,44 @@
 package calendar;
 
-import java.awt.Color;
-import java.util.Arrays;
+import Exceptions.InvalidTimeSpanStartEndException;
+
 import java.util.Date;
 
 /**
- * This class represents an appointment with specified additional information.
+ * This class represents an appointment, a fixed event that takes place at a certain time.
+ *
  * @author Markus Luethje
  */
 
 public class Appointment extends CalendarEvent {
-    private Person[] persons;
-    private Location location;
-    private Label label;
-    private Color color;
-    private RepetitionRule repetitionRule;
 
-    public Appointment(String name, Date startDate, Date endDate, Person[] persons, Location location, boolean moveable, Label label, Color color, RepetitionRule repetitionRule) {
+    final Date startDate;
+    final Date endDate;
+    final RepetitionRule repetitionRule;
 
-        super(name, startDate, endDate, moveable);
-        this.persons = persons;
-        this.location = location;
-        this.label = label;
-        this.color = color;
+    public Appointment(String name, Date startDate, Date endDate, RepetitionRule repetitionRule) {
+        super(name);
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.repetitionRule = repetitionRule;
     }
 
-    public Person[] getPersons() {
-        return persons;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setPersons(Person[] persons) {
-        this.persons = persons;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public Label getLabel() {
-        return label;
-    }
-
-    public void setLabel(Label label) {
-        this.label = label;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
+    public Date getEndDate() {
+        return endDate;
     }
 
     public RepetitionRule getRepetitionRule() {
         return repetitionRule;
     }
 
-    public void setRepetitionRule(RepetitionRule repetitionRule) {
-        this.repetitionRule = repetitionRule;
+    @Override
+    public void validate() throws InvalidTimeSpanStartEndException {
+        if (endDate.before(startDate)) {
+            throw new InvalidTimeSpanStartEndException("End of appointment cannot be earlier than start!");
+        }
     }
 }

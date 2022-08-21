@@ -4,7 +4,8 @@ import javax.swing.*;
 
 public class TextField extends JTextField {
 
-    public TextField(String name) {
-        super(name);
+    public TextField(String text, String name) {
+        super(text);
+        this.setName(name);
     }
 }

@@ -1,5 +1,8 @@
 package ui;
 
+import Exceptions.DurationLongerThanProcessingTimeException;
+import Exceptions.InvalidTimeSpanStartEndException;
+import Exceptions.NegativeDurationDataException;
 import calendar.*;
 
 import javax.swing.*;
@@ -28,51 +31,57 @@ public class UIManager {
     final int CALENDARSPACINGWIDTH = 20;
     final Color BACKGROUNDCOLOR = new Color(151, 144, 236);
 
-    public UIManager() {
-        frame = new Frame();
+    final int TOPROWWIDTH = 200;
+    final int TOPROWHEIGHT = 80;
+    final int SIDEROWWIDTH = 100;
+    final int SIDEROWHEIGHT = 40;
+
+    public UIManager() throws NegativeDurationDataException {
+        frame = new Frame("mainFrame");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        Panel mainPanel = new Panel();
+        Panel mainPanel = new Panel("mainPanel");
 
         BoxLayout boxLayoutHorizontal = new BoxLayout(mainPanel, BoxLayout.X_AXIS);
         mainPanel.setLayout(boxLayoutHorizontal);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setBackground(BACKGROUNDCOLOR);
 
-        Panel menuButtonPanel = new Panel();
+        Panel menuButtonPanel = new Panel("menuButtonPanel");
         BoxLayout menuButtonLayout = new BoxLayout(menuButtonPanel, BoxLayout.Y_AXIS);
         menuButtonPanel.setLayout(menuButtonLayout);
         menuButtonPanel.setMaximumSize(new Dimension(MENUBUTTONWIDTH, Integer.MAX_VALUE));
         menuButtonPanel.setBackground(BACKGROUNDCOLOR);
 
-        Panel addButtonsPanel = new Panel();
+        Panel addButtonsPanel = new Panel("addButtonsPanel");
         BoxLayout addButtonsLayout = new BoxLayout(addButtonsPanel, BoxLayout.Y_AXIS);
         addButtonsPanel.setLayout(addButtonsLayout);
         addButtonsPanel.setMaximumSize(new Dimension(ADDBUTTONWIDTH, Integer.MAX_VALUE));
         addButtonsPanel.setBackground(BACKGROUNDCOLOR);
 
-        Panel calendarAreaPanel = new Panel();
+        Panel calendarAreaPanel = new Panel("calendarAreaPanel");
         BoxLayout calendarAreaLayout = new BoxLayout(calendarAreaPanel, BoxLayout.Y_AXIS);
         calendarAreaPanel.setLayout(calendarAreaLayout);
         calendarAreaPanel.setBackground(BACKGROUNDCOLOR);
 
-        taskScrollPanel = new Panel();
+        taskScrollPanel = new Panel("taskScrollPanel");
         taskScrollPanel.setLayout(new BoxLayout(taskScrollPanel, BoxLayout.X_AXIS));
 
-        calendarScrollPanel = new Panel(new GridBagLayout());
+        calendarScrollPanel = new Panel(new GridBagLayout(), "calendarScrollPanel");
         setUpCalendar();
 
-        UIButton menuButton = new UIButton("Menu", MENUBUTTONWIDTH, MENUBUTTONHEIGHT);
-        UIButton addTaskButton = new UIButton("Add Task", ADDBUTTONWIDTH, ADDBUTTONHEIGHT);
+        UIButton menuButton = new UIButton("Menu", MENUBUTTONWIDTH, MENUBUTTONHEIGHT, false, "menuButton");
+        UIButton addTaskButton = new UIButton("Add Task", ADDBUTTONWIDTH, ADDBUTTONHEIGHT, false, "addTaskButton");
         addTaskButton.addActionListener(e -> newTaskInput());
-        UIButton addBlockerButton = new UIButton("Add Blocker", ADDBUTTONWIDTH, ADDBUTTONHEIGHT);
+        UIButton addBlockerButton = new UIButton("Add Blocker", ADDBUTTONWIDTH, ADDBUTTONHEIGHT, false, "addBlockerButton");
         addBlockerButton.addActionListener(e -> newBlockerInput());
-        UIButton addAppointmentButton = new UIButton("Add Appointment", ADDBUTTONWIDTH, ADDBUTTONHEIGHT);
-        UIButton organizeButton = new UIButton("Organize", ADDBUTTONWIDTH, ADDBUTTONHEIGHT);
-        UIButton loadTemplateButton = new UIButton("Load Template", ADDBUTTONWIDTH, ADDBUTTONHEIGHT);
-        UIButton saveTemplateButton = new UIButton("Save Template", ADDBUTTONWIDTH, ADDBUTTONHEIGHT);
+        UIButton addAppointmentButton = new UIButton("Add Appointment", ADDBUTTONWIDTH, ADDBUTTONHEIGHT, false, "addAppointmentButton");
+        addAppointmentButton.addActionListener(e -> newAppointmentInput());
+        UIButton organizeButton = new UIButton("Organize", ADDBUTTONWIDTH, ADDBUTTONHEIGHT, false, "organizeButton");
+        UIButton loadTemplateButton = new UIButton("Load Template", ADDBUTTONWIDTH, ADDBUTTONHEIGHT, false, "loadTemplateButton");
+        UIButton saveTemplateButton = new UIButton("Save Template", ADDBUTTONWIDTH, ADDBUTTONHEIGHT, false, "saveTemplateButton");
 
         ScrollPane taskScrollPane = new ScrollPane(taskScrollPanel);
         taskScrollPane.getViewport().setPreferredSize(new Dimension(Integer.MAX_VALUE, 120));
@@ -128,60 +137,64 @@ public class UIManager {
     }
 
     private void newTaskInput() {
-        TextField name = new TextField("New task");
-        DateTextField dueDate = new DateTextField();
-        dueDate.setText("DD.MM.YYYY");
-        TimeTextField dueTime = new TimeTextField();
-        dueTime.setText("HH:MM");
-        CheckBox split = new CheckBox("Is splittable");
-        split.setSelected(true);
-        NumberTextField durationDays = new NumberTextField();
-        durationDays.setText("Days");
-        NumberTextField durationHours = new NumberTextField();
-        durationHours.setText("Hours");
-        NumberTextField durationMinutes = new NumberTextField();
-        durationMinutes.setText("Minutes");
-        DateTextField processingBeginDate = new DateTextField();
-        processingBeginDate.setText("From DD.MM.YYYY");
-        TimeTextField processingBeginTime = new TimeTextField();
-        processingBeginTime.setText("HH:MM");
-        DateTextField processingEndDate = new DateTextField();
-        processingEndDate.setText("To DD.MM.YYYY");
-        TimeTextField processingEndTime = new TimeTextField();
-        processingEndTime.setText("HH:MM");
+        TextField name = new TextField("New task", "taskName");
 
-        Panel panel = new Panel(new GridLayout(0, 1));
-        panel.add(new Label("Task name:"));
+        Panel durationPanel = getDurationPanel();
+        Panel dateBeginPanel = getBeginDatePanel();
+        Panel dateEndPanel = getEndDatePanel();
+
+        CheckBox split = new CheckBox("Is splittable", "split");
+        split.setSelected(false);
+
+        Panel panel = new Panel(new GridLayout(0, 1), "taskInputPanel");
+        panel.add(new Label("Task name:", "nameLabel"));
         panel.add(name);
-        panel.add(new Label("Due date:"));
-        panel.add(dueDate);
-        panel.add(dueTime);
+        panel.add(new Label("Duration:", "durationLabel"));
+        panel.add(durationPanel);
+        panel.add(new Label("Processing period:", "processingPeriodLabel"));
+        panel.add(dateBeginPanel);
+        panel.add(dateEndPanel);
         panel.add(split);
-        panel.add(new Label("Duration:"));
-        panel.add(durationDays);
-        panel.add(durationHours);
-        panel.add(durationMinutes);
-        panel.add(new Label("Processing period:"));
-        panel.add(processingBeginDate);
-        panel.add(processingBeginTime);
-        panel.add(processingEndDate);
-        panel.add(processingEndTime);
 
         int result = JOptionPane.showConfirmDialog(null, panel, "Create new task",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             try {
-                Date date = getDateFromStrings(dueDate.getText(), dueTime.getText());
-                int days = Integer.parseInt(durationDays.getText());
-                int hours = Integer.parseInt(durationHours.getText());
-                int minutes = Integer.parseInt(durationMinutes.getText());
+                String taskName = name.getText();
+
+                int days = Integer.parseInt(((NumberTextField) durationPanel.getComponentByName("durationDays")).getText());
+                int hours = Integer.parseInt(((NumberTextField) durationPanel.getComponentByName("durationHours")).getText());
+                int minutes = Integer.parseInt(((NumberTextField) durationPanel.getComponentByName("durationMinutes")).getText());
                 Duration dur = new Duration(days, hours, minutes);
-                addNewTask(new Task(name.getText(), date, dur, split.isSelected(),
-                        new Interval(getDateFromStrings(processingBeginDate.getText(), processingBeginTime.getText()),
-                                getDateFromStrings(processingEndDate.getText(), processingEndTime.getText()))));
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null,
-                        "Invalid duration entered.\nPlease create the task again.");
+
+                boolean splittable = split.isSelected();
+
+                Date startDate = getDateFromStrings(((DateTextField) dateBeginPanel.getComponentByName("processingBeginDate")).getText(),
+                        ((TimeTextField) dateBeginPanel.getComponentByName("processingBeginTime")).getText());
+                Date endDate = getDateFromStrings(((DateTextField) dateEndPanel.getComponentByName("processingEndDate")).getText(),
+                        ((TimeTextField) dateEndPanel.getComponentByName("processingEndTime")).getText());
+
+                Task task = new Task(taskName, dur, splittable, startDate, endDate);
+                task.validate();
+                addNewTask(task);
+            }
+
+            catch (NegativeDurationDataException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+            catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid duration data entered!");
+            }
+            catch (InvalidTimeSpanStartEndException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+            catch (DurationLongerThanProcessingTimeException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "An error occured!\n " +
+                        "Please try again and make sure to enter valid input data.");
+                e.printStackTrace();
             }
         }
     }
@@ -196,57 +209,57 @@ public class UIManager {
         return new Date(year, month, day, hour, minute);
     }
 
-    private void newBlockerInput() {
-        TextField name = new TextField("New Blocker");
-        DateTextField intervalBeginDate = new DateTextField();
-        intervalBeginDate.setText("From DD.MM.YYYY");
-        TimeTextField intervalBeginTime = new TimeTextField();
-        intervalBeginTime.setText("HH:MM");
-        DateTextField intervalEndDate = new DateTextField();
-        intervalEndDate.setText("To DD.MM.YYYY");
-        TimeTextField intervalEndTime = new TimeTextField();
-        intervalEndTime.setText("HH:MM");
-        NumberTextField durationDays = new NumberTextField();
-        durationDays.setText("Days");
-        NumberTextField durationHours = new NumberTextField();
-        durationHours.setText("Hours");
-        NumberTextField durationMinutes = new NumberTextField();
-        durationMinutes.setText("Minutes");
+    private Panel getBeginDatePanel() {
+        DateTextField processingBeginDate = new DateTextField("processingBeginDate");
+        processingBeginDate.setText("DD.MM.YYYY");
+        TimeTextField processingBeginTime = new TimeTextField("processingBeginTime");
+        processingBeginTime.setText("HH:MM");
+        Panel dateBeginPanel = new Panel(new GridLayout(1, 0), "dateBeginPanel");
+        dateBeginPanel.add(new Label("From", "dateBeginLabel"));
+        dateBeginPanel.add(processingBeginDate);
+        dateBeginPanel.add(processingBeginTime);
 
-        Panel panel = new Panel(new GridLayout(0, 1));
-        panel.add(new Label("Blocker name:"));
-        panel.add(name);
-        panel.add(new Label("Duration:"));
-        panel.add(durationDays);
-        panel.add(durationHours);
-        panel.add(durationMinutes);
-        panel.add(new Label("Processing period:"));
-        panel.add(intervalBeginDate);
-        panel.add(intervalBeginTime);
-        panel.add(intervalEndDate);
-        panel.add(intervalEndTime);
-
-        int result = JOptionPane.showConfirmDialog(null, panel, "Create new blocker",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            try {
-                int days = Integer.parseInt(durationDays.getText());
-                int hours = Integer.parseInt(durationHours.getText());
-                int minutes = Integer.parseInt(durationMinutes.getText());
-                Duration dur = new Duration(days, hours, minutes);
-                Interval interval = new Interval(getDateFromStrings(intervalBeginDate.getText(), intervalBeginTime.getText()),
-                        getDateFromStrings(intervalEndDate.getText(), intervalEndTime.getText()));
-
-                Blocker blocker = new Blocker(name.getText(), interval, dur);
-                addNewBlocker(blocker);
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null,
-                        "Invalid duration entered.\nPlease create the task again.");
-            }
-        }
+        return dateBeginPanel;
     }
 
-    private void setUpCalendar() {
+    private Panel getEndDatePanel() {
+        DateTextField processingEndDate = new DateTextField("processingEndDate");
+        processingEndDate.setText("DD.MM.YYYY");
+        TimeTextField processingEndTime = new TimeTextField("processingEndTime");
+        processingEndTime.setText("HH:MM");
+        Panel dateEndPanel = new Panel(new GridLayout(1, 0), "dateEndPanel");
+        dateEndPanel.add(new Label("To", "dateEndLabel"));
+        dateEndPanel.add(processingEndDate);
+        dateEndPanel.add(processingEndTime);
+
+        return dateEndPanel;
+    }
+
+    private Panel getDurationPanel() {
+        NumberTextField durationDays = new NumberTextField("durationDays");
+        durationDays.setText("Days");
+        NumberTextField durationHours = new NumberTextField("durationHours");
+        durationHours.setText("Hours");
+        NumberTextField durationMinutes = new NumberTextField("durationMinutes");
+        durationMinutes.setText("Minutes");
+        Panel durationPanel = new Panel(new GridLayout(1, 0), "durationPanel");
+        durationPanel.add(durationDays);
+        durationPanel.add(durationHours);
+        durationPanel.add(durationMinutes);
+
+        return durationPanel;
+    }
+
+    private void newAppointmentInput() {
+        TextField name = new TextField("New Appointment", "appointmentName");
+
+
+    }
+    private void newBlockerInput() {
+        TextField name = new TextField("New Blocker", "blockerName");
+    }
+
+    private void setUpCalendar() throws NegativeDurationDataException {
         int cols = 8;
         GridBagConstraints c;
         Date[] dates = getWeekForDate(new Date());
@@ -260,10 +273,10 @@ public class UIManager {
                 c = getConstraints(col, 0, true, false);
             }
             if (col != 0) {
-                calendarScrollPanel.add(new CalendarBorderTopPanel(dates[col - 1]), c);
+                calendarScrollPanel.add(new CalendarBorderTopPanel(dates[col - 1], TOPROWWIDTH, TOPROWHEIGHT), c);
             }
             else {
-                calendarScrollPanel.add(new CalendarPanel(), c);
+                calendarScrollPanel.add(new CalendarPanel(SIDEROWWIDTH, TOPROWHEIGHT), c);
             }
         }
 
@@ -277,7 +290,11 @@ public class UIManager {
                 else {
                     c = getConstraints(0, index++, false, true);
                 }
-                calendarScrollPanel.add(new CalendarBorderSidePanel(new SideTime(hour, (quarter * 15), new Duration(0, 0, 15))), c);
+                try {
+                    calendarScrollPanel.add(new CalendarBorderSidePanel(new SideTime(hour, (quarter * 15), new Duration(0, 0, 15)), SIDEROWWIDTH, SIDEROWHEIGHT), c);
+                } catch (NegativeDurationDataException e) {
+                    throw e;
+                }
             }
         }
 
@@ -316,8 +333,9 @@ public class UIManager {
         c.setTime(date);
 
         int day = c.get(Calendar.DAY_OF_WEEK);
-        if (day != 0) {
-            ret[--day] = date;
+        if (day != 1) {
+            day -= 2;
+            ret[day] = date;
         }
         else {
             ret[6] = date;

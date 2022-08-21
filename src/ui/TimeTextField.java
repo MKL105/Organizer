@@ -9,8 +9,8 @@ import java.time.format.DateTimeFormatter;
 
 public class TimeTextField extends FormattedTextField{
 
-    public TimeTextField() {
-        super(new DateFormatter(new SimpleDateFormat("hh:mm")));
+    public TimeTextField(String name) {
+        super(new DateFormatter(new SimpleDateFormat("hh:mm")), name);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("hh:mm");
         LocalDateTime now = LocalDateTime.now();

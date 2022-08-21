@@ -1,7 +1,6 @@
 package ui;
 
 import javax.swing.JFrame;
-import java.awt.*;
 
 /**
  * This class represents the Frame that is needed in order to have a graphical user interface.
@@ -9,8 +8,9 @@ import java.awt.*;
  */
 
 public class Frame extends JFrame {
-    public Frame() {
+    public Frame(String name) {
         super("Organizer");
+        this.setName(name);
     }
 
 }

@@ -1,7 +1,5 @@
 package ui;
 
-import calendar.SideTime;
-
 import java.awt.*;
 
 public class CalendarBorderSidePanel extends CalendarPanel {
@@ -9,7 +7,8 @@ public class CalendarBorderSidePanel extends CalendarPanel {
     final SideTime time;
     final Color TEXTCOLOR = new Color(0, 170, 169);
 
-    public CalendarBorderSidePanel(SideTime time) {
+    public CalendarBorderSidePanel(SideTime time, int width, int height) {
+        super(width, height);
         this.time = time;
     }
 
@@ -22,6 +21,6 @@ public class CalendarBorderSidePanel extends CalendarPanel {
     private void draw(Graphics g) {
         String str = time.startTimeToString() + " - " + time.endTimeToString();
         Graphics2D graphic = (Graphics2D) g;
-        drawStringCentered(graphic, str, 20, TEXTCOLOR);
+        drawStringCentered(graphic, str, (HEIGHT + g.getFontMetrics().getHeight()) / 2, TEXTCOLOR);
     }
 }
